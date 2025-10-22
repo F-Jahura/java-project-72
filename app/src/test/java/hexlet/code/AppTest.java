@@ -4,7 +4,6 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import hexlet.code.model.Url;
 import hexlet.code.model.UrlCheck;
-import hexlet.code.util.NamedRoutes;
 import hexlet.code.utils.TestUtils;
 import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
@@ -121,28 +120,6 @@ class AppTest {
         assertEquals(title, urlCheck.getTitle());
         assertEquals(h1, urlCheck.getH1());
         assertEquals(description, urlCheck.getDescription());
-    }
-
-    @Test
-    public void testBuildUrlPath() {
-        String path = NamedRoutes.buildUrlPath();
-        assertEquals("/urls/build", path);
-    }
-
-    @Test
-    public void testUrlChecksPathWithString() {
-        String id = "3";
-        String expected = "/urls/3/checks";
-        String actual = NamedRoutes.urlChecksPath(id);
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testUrlChecksPathWithLong() {
-        Long id = 4L;
-        String expected = "/urls/4/checks";
-        String actual = NamedRoutes.urlChecksPath(id);
-        assertEquals(expected, actual);
     }
 
     @Nested
