@@ -88,9 +88,6 @@ public final class UrlsController {
             return;
         }
 
-        // Нормализируем урл.
-        // Нужны только протокол, имя домена и порт (если задан).
-        // В случае дефолтного порта 80, его указывать не требуется
         String normalizedUrl = String
                 .format(
                         "%s://%s%s",
