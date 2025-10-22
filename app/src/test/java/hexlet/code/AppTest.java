@@ -3,6 +3,7 @@ package hexlet.code;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import hexlet.code.model.Url;
+import hexlet.code.repository.UrlRepository;
 import hexlet.code.utils.TestUtils;
 import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
@@ -25,7 +26,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
     private static MockWebServer mockServer;
@@ -88,6 +89,24 @@ class AppTest {
 
         TestUtils.addUrlCheck(dataSource, (long) existingUrl.get("id"));
         existingUrlCheck = TestUtils.getUrlCheck(dataSource, (long) existingUrl.get("id"));
+    }
+
+    @Test
+    public void testGetUrlByNameFound() throws SQLException {
+        String url = "https://en.hexlet.io";
+
+        Map<String, Object> result = UrlRepository.getUrlByName(url);
+        assertNotNull(result);
+        assertEquals(url, result.get("name"));
+        assertTrue(result.containsKey("id"));
+    }
+
+    @Test
+    public void testGetUrlByNameNotFound() throws SQLException {
+        String url = "https://nonexistent-url.com";
+
+        Map<String, Object> result = UrlRepository.getUrlByName(url);
+        assertNull(result);
     }
 
     @Test

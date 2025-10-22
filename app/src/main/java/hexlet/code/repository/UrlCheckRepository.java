@@ -103,30 +103,4 @@ public class UrlCheckRepository extends BaseRepository {
             return result;
         }
     }
-
-    public static Map<Long, UrlCheck> getLastChecksForAllUrls() throws SQLException {
-        LOGGER.info("Getting last checks for all URLs");
-        String sql = "SELECT DISTINCT ON (url_id) * FROM url_checks ORDER BY url_id, created_at DESC";
-        var lastChecks = new HashMap<Long, UrlCheck>();
-        try (var conn = dataSource.getConnection();
-             var stmt = conn.prepareStatement(sql)) {
-            var resultSet = stmt.executeQuery();
-            while (resultSet.next()) {
-                var listOfUrls = new UrlCheck();
-                listOfUrls.setId(resultSet.getLong(ID));
-                listOfUrls.setStatusCode(resultSet.getInt(STATUS_CODE));
-                listOfUrls.setTitle(resultSet.getString(TITLE));
-                listOfUrls.setH1(resultSet.getString(H1));
-                listOfUrls.setDescription(resultSet.getString(DESCRIPTION));
-                listOfUrls.setCreatedAt(resultSet.getTimestamp(CREATED_AT).toLocalDateTime());
-                var urlId = resultSet.getLong(URL_ID);
-                listOfUrls.setUrlId(urlId);
-                lastChecks.put(urlId, listOfUrls);
-            }
-            return lastChecks;
-        } catch (SQLException e) {
-            LOGGER.error("Failed to get last checks for all URLs", e);
-            throw e;
-        }
-    }
 }
