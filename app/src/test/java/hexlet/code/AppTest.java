@@ -3,7 +3,8 @@ package hexlet.code;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import hexlet.code.model.Url;
-//import hexlet.code.repository.UrlRepository;
+import hexlet.code.model.UrlCheck;
+import hexlet.code.util.NamedRoutes;
 import hexlet.code.utils.TestUtils;
 import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
@@ -26,9 +27,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-/*import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNull;*/
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -95,24 +93,6 @@ class AppTest {
         existingUrlCheck = TestUtils.getUrlCheck(dataSource, (long) existingUrl.get("id"));
     }
 
-    /*@Test
-    public void testGetUrlByNameFound() throws SQLException {
-        String url = "https://en.hexlet.io";
-
-        Map<String, Object> result = UrlRepository.getUrlByName(url);
-        assertNotNull(result);
-        assertEquals(url, result.get("name"));
-        assertTrue(result.containsKey("id"));
-    }
-
-    @Test
-    public void testGetUrlByNameNotFound() throws SQLException {
-        String url = "https://nonexistent-url.com";
-
-        Map<String, Object> result = UrlRepository.getUrlByName(url);
-        assertNull(result);
-    }*/
-
     @Test
     public void testUrlConstructor() {
         Long id = 1L;
@@ -124,6 +104,45 @@ class AppTest {
         assertEquals(id, url.getId());
         assertEquals(name, url.getName());
         assertEquals(createdAt, url.getCreatedAt());
+    }
+
+    @Test
+    public void testUrlCheckConstructor() {
+        Long urlId = 1L;
+        int statusCode = 200;
+        String title = "example title";
+        String h1 = "header 1";
+        String description = "some description";
+
+        UrlCheck urlCheck = new UrlCheck(urlId, statusCode, title, h1, description);
+
+        assertEquals(urlId, urlCheck.getUrlId());
+        assertEquals(statusCode, urlCheck.getStatusCode());
+        assertEquals(title, urlCheck.getTitle());
+        assertEquals(h1, urlCheck.getH1());
+        assertEquals(description, urlCheck.getDescription());
+    }
+
+    @Test
+    public void testBuildUrlPath() {
+        String path = NamedRoutes.buildUrlPath();
+        assertEquals("/urls/build", path);
+    }
+
+    @Test
+    public void testUrlChecksPathWithString() {
+        String id = "3";
+        String expected = "/urls/3/checks";
+        String actual = NamedRoutes.urlChecksPath(id);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testUrlChecksPathWithLong() {
+        Long id = 4L;
+        String expected = "/urls/4/checks";
+        String actual = NamedRoutes.urlChecksPath(id);
+        assertEquals(expected, actual);
     }
 
     @Nested
