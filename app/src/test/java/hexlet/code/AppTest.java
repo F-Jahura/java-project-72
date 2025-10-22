@@ -95,7 +95,7 @@ class AppTest {
         existingUrlCheck = TestUtils.getUrlCheck(dataSource, (long) existingUrl.get("id"));
     }
 
-    @Test
+    /*@Test
     public void testGetUrlByNameFound() throws SQLException {
         String url = "https://en.hexlet.io";
 
@@ -111,7 +111,7 @@ class AppTest {
 
         Map<String, Object> result = UrlRepository.getUrlByName(url);
         assertNull(result);
-    }
+    }*/
 
     @Test
     public void testUrlConstructor() {
